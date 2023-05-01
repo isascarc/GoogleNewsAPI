@@ -11,17 +11,18 @@ namespace GoogleNewsAPI
     {
         public static async Task<JArray> GetNews(string search)
         {
-            string url = $"http://news.google.com/news?output=rss";           
+            string url = $"http://news.google.com/news?output=rss";
 
             if (!string.IsNullOrEmpty(search))
                 url += $"&q={search}";
-            var uri2 = new Uri(url);
+            var uri = new Uri(url);
+
+            HttpRequestMessage request = new(HttpMethod.Get, uri.OriginalString);
+            request.Headers.Add("Accept", "*/*");
+            request.Headers.Add("Host", uri.Host);
+
             using (var client = new HttpClient() { })
             {
-                HttpRequestMessage request = new(HttpMethod.Get, uri2.OriginalString);
-                request.Headers.Add("Accept", "*/*");
-                request.Headers.Add("Host", uri2.Host);
-
                 // Return a XML object from google
                 var response = await client.SendAsync(request);
                 string res = await response.Content.ReadAsStringAsync();
