@@ -5,8 +5,21 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AssemblyVersion>1.2</AssemblyVersion>
 	  <VersionPrefix>$(AssemblyVersion)</VersionPrefix>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageIcon>download (4).jpg</PackageIcon>
 	  
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\..\Downloads\download (4).jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -9,12 +9,12 @@ namespace GoogleNewsAPI
 {
     public static class NewsApi
     {
-        public static async Task<JArray> GetNews(string search)
+        public static async Task<JArray> GetNews(string search, string country = "US", string lang = "en")
         {
-            string url = $"http://news.google.com/news?output=rss";
-
+            string url = $"http://news.google.com/rss?gl={country}&hl={lang}-{country}&ceid={country}:{lang}";
             if (!string.IsNullOrEmpty(search))
                 url += $"&q={search}";
+
             var uri = new Uri(url);
 
             HttpRequestMessage request = new(HttpMethod.Get, uri.OriginalString);
