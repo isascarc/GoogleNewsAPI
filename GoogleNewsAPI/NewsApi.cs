@@ -9,22 +9,25 @@ namespace GoogleNewsAPI
 {
     public static class NewsApi
     {
-        public static async Task<JArray > GetNews(string search)
+        public static async Task<JArray> GetNews(string search)
         {
-            //var url = new Uri($"http://news.google.com/news?output=rss");
-            var url = new Uri($"http://news.google.com/news?q={search}&output=rss");
+            string url = $"http://news.google.com/news?output=rss";           
+
+            if (!string.IsNullOrEmpty(search))
+                url += $"&q={search}";
+            var uri2 = new Uri(url);
             using (var client = new HttpClient() { })
             {
-                HttpRequestMessage request = new(HttpMethod.Get, url.OriginalString);
+                HttpRequestMessage request = new(HttpMethod.Get, uri2.OriginalString);
                 request.Headers.Add("Accept", "*/*");
-                request.Headers.Add("Host", url.Host);
+                request.Headers.Add("Host", uri2.Host);
 
                 // Return a XML object from google
-                string res = await (await client.SendAsync(request)).Content.ReadAsStringAsync();
+                var response = await client.SendAsync(request);
+                string res = await response.Content.ReadAsStringAsync();
                 XElement xResult = XElement.Parse(res);
 
                 // Convert the XElement object to a JSON string
-                // use in jsonConvert of newtonsoft for convert to json in perfectly
                 var ret = JObject.Parse(JsonConvert.SerializeXNode(xResult));
 
                 var a = ret?["rss"]?["channel"]?["item"];
